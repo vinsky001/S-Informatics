@@ -1,1 +1,1 @@
-# S.-Informatics
+# S-Informatics
