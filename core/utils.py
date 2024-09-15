@@ -1,9 +1,13 @@
 import africastalking
+import environ
 
 def send_sms(phone_number, message):
-    # Initialize SDK
-    username = "YOUR_USERNAME"  # 'sandbox' for development
-    api_key = "YOUR_API_KEY"    # sandbox API key for development
+    env = environ.Env()
+    environ.Env.read_env()
+
+    username = env("AFRICASTALKING_USERNAME")
+    api_key = env("AFRICASTALKING_API_KEY")
+    
     africastalking.initialize(username, api_key)
 
     # Initialize SMS service
