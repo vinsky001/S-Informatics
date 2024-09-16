@@ -1,4 +1,4 @@
-from django_framework import serializers
+from rest_framework import serializers
 from .models import Customer, Order
 from phonenumber_field.modelfields import PhoneNumberField
 

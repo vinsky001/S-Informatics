@@ -1,13 +1,13 @@
-import environ
 from pathlib import Path
+import environ
 
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool,False))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-environ.Env.read_env(BASE_DIR / ".env")
-
+# Read the .env file from the correct location
+environ.Env.read_env(BASE_DIR / "../.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -21,6 +21,7 @@ DEBUG = env("DEBUG")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 
+
 # Application definition
 
 DJANGO_APPS = [
@@ -30,7 +31,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "DJANGO.contrib.sites"
+    "django.contrib.sites"
 ]
 
 SITE_ID = 1
@@ -41,7 +42,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "core",
+    "core"
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -80,12 +81,6 @@ WSGI_APPLICATION = "server.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 
 # Password validation

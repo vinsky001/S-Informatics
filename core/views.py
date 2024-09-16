@@ -16,13 +16,8 @@ class CustomerViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
     
-    def perform_create(self, serializer):
-        order = serializer.save()
-        customer = order.customer
-        message = f"New order placed: {order.item} for {order.amount}"
-        send_sms(customer.phone_number, message)
 
 class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
@@ -36,4 +31,13 @@ class OrderViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def perform_create(self, serializer):
+        order = serializer.save()
+        customer = order.customer
+        message = self.generate_order_message(order)
+        send_sms(customer.phone_number, message)
+
+    def generate_order_message(self, order):
+        return f"New order placed: {order.item} for ${order.amount:.2f}"
 
