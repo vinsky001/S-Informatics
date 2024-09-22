@@ -1,39 +1,38 @@
 name: Django CI
 
+# Define events to trigger the workflow
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  
   pull_request:
-    branches: [ main ]
+    branches:
+      - main  
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-    
-    # Install dependencies, including coverage
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install coverage  # install coverage together with dependencies
+        pip install coverage
 
-    # Set environment variables (before running tests)
     - name: Set environment variables
-      env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
 
-    # Run tests
     - name: Run tests
-      run: |
-        python manage.py test
+      run: python manage.py test
 
-    # Run coverage after tests
     - name: Run coverage
       run: |
         coverage run manage.py test
@@ -45,5 +44,9 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
     - uses: actions/checkout@v2
-    
-   
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "your-app-name"
+        heroku_email: "your-email@example.com"
