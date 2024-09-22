@@ -27,6 +27,9 @@ jobs:
         pip install coverage
         coverage run manage.py test
         coverage report
+    - name: Set environment variables
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}   
 
   deploy:
     needs: test
