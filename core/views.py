@@ -13,12 +13,13 @@ class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
-    @action(detail=False, methods=['POST'])
+    @action(detail=False, methods=['post'])
     def upload_customers(self, request):
         serializer = self.get_serializer(data=request.data, many=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("Validation errors:", serializer.errors)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
     
 
@@ -36,14 +37,10 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    async def perform_create(self, serializer):
+    def perform_create(self, serializer):
         order = serializer.save()
-        customer = order.customer
-        message = self.generate_order_message(order)
-        try:
-            await sync_to_async(send_sms)(customer.phone_number, message)
-        except Exception as e:
-            print(f"An error occurred while sending SMS: {str(e)}")
+        send_sms(order.customer.phone_number, f'New order placed: {order.item} for ${order.amount}')
+
 
     def generate_order_message(self, order):
         return f"New order placed: {order.item} for ${order.amount:.2f}"
