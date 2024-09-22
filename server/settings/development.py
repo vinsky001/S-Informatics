@@ -11,4 +11,9 @@ DATABASES = {
     }
 }
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+TEST_DISCOVER_TOP_LEVEL = BASE_DIR
+TEST_DISCOVER_ROOT = BASE_DIR / 'tests'
+TEST_DISCOVER_PATTERN = 'test_*.py'
+
 
