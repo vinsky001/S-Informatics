@@ -17,8 +17,8 @@ jobs:
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-      PG_HOST: ${{ secrets.PG_HOST }}
-      PG_PORT: ${{ secrets.PG_PORT }}
+      PG_HOST: localhost
+      PG_PORT: 5432
       AFRICASTALKING_API_KEY: ${{ secrets.AFRICASTALKING_API_KEY }}
       AFRICASTALKING_USERNAME: ${{ secrets.AFRICASTALKING_USERNAME }}
     services:
