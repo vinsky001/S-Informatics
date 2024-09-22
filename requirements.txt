@@ -1,2 +1,9 @@
 djangorestframework==3.12.2
 django-phonenumber-field==7.3.0
+django-allauth
+django-environ
+psycopg2
+django==4.2.7
+africastalking
+
+
