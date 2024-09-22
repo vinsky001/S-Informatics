@@ -1,7 +1,7 @@
 from pathlib import Path
 import environ
 import jwt
-
+import os
 
 env = environ.Env(DEBUG=(bool,False))
 
@@ -51,7 +51,15 @@ DJANGO_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
+    
 ]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = []
+
+
 
 
 SITE_ID = 1
@@ -83,7 +91,7 @@ ROOT_URLCONF = "server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -100,6 +108,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "server.wsgi.application"
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
@@ -158,6 +167,16 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,
+    }
+}
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
     }
 }
 
