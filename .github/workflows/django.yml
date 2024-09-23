@@ -65,7 +65,3 @@ jobs:
     - name: Run database migrations
       run: |
         heroku run python manage.py migrate --app savinfo
-    - name: Tag the release
-      run: |
-        git tag -a v$(date +'%Y%m%d%H%M%S') -m "Deployed to Heroku"
-        git push origin --tags     
