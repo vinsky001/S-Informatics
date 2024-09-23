@@ -62,3 +62,13 @@ jobs:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_app_name: "savinfo"
         heroku_email: "ekibet544@gmail.com"
+    - name: Run database migrations
+      run: |
+        heroku run python manage.py migrate --app savinfo
+    - name: Health check
+      run: |
+        curl -f https://savinfo-46ec763fcf87.herokuapp.com//health || exit 1
+    - name: Tag the release
+      run: |
+        git tag -a v$(date +'%Y%m%d%H%M%S') -m "Deployed to Heroku"
+        git push origin --tags     
